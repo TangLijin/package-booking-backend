@@ -1,13 +1,12 @@
 package com.oocl.packagebooking.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class CargoPackage {
 
     @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long packageNumber;
 
     private String customerName;

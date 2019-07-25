@@ -20,11 +20,8 @@ public class CargoPackageController {
     }
 
 
-
-
-
-    @PostMapping("/addNewPackage")
-    public  List<CargoPackage> addNewPackage(CargoPackage cargoPackage){
+    @PostMapping
+    public  List<CargoPackage> addNewPackage(@RequestBody CargoPackage cargoPackage){
         cargoPackageRepository.saveAndFlush(cargoPackage);
         return cargoPackageRepository.findAll();
     }
@@ -34,18 +31,23 @@ public class CargoPackageController {
 //
 //    }
 
-    @PutMapping("/updatePackage/{packageNumber}")
-    public List<CargoPackage> updatePackage(@RequestParam Long packageNumber,@RequestParam(required = false)String appointmentTime){
-        if(appointmentTime == null){
-            CargoPackage cargoPackage = cargoPackageRepository.findById(packageNumber).get();
+
+
+
+    @PutMapping("/{packageNumber}")
+    public List<CargoPackage> updatePackage(@PathVariable Long packageNumber,@RequestParam(required = false)String appointmentTime){
+        CargoPackage cargoPackage = cargoPackageRepository.findById(packageNumber).get();
+
+        if(appointmentTime == null){    //取件
+//            CargoPackage cargoPackage = cargoPackageRepository.findById(packageNumber).get();
             cargoPackage.setState("已取件");
-            cargoPackageRepository.saveAndFlush(cargoPackage);
-        }else {
-            CargoPackage cargoPackage = cargoPackageRepository.findById(packageNumber).get();
+            cargoPackage.setAppointmentTime(null);
+        }else {  //预约
+//            CargoPackage cargoPackage = cargoPackageRepository.findById(packageNumber).get();
             cargoPackage.setState("已预约");
             cargoPackage.setAppointmentTime(appointmentTime);
-            cargoPackageRepository.saveAndFlush(cargoPackage);
         }
+        cargoPackageRepository.saveAndFlush(cargoPackage);
         return cargoPackageRepository.findAll();
     }
 
